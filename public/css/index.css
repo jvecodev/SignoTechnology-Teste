@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&family=Barriecito&family=Playwrite+GB+S+Guides:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap');
+
+:root{
+    --font-main: 'Poppins', sans-serif;
+    --color-1: #2D3E40;
+    --color-2: #387373;
+    --color-3: #93BFB7;
+    --color-4: #97A6A0;
+    --color-5: #E4F2E7;
+    --color-6: #ffffff;
+    --color-7: #000000;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+body{
+    overflow: hidden;
+    background: url('../img/fundo.jpg') no-repeat center center/cover fixed;
+    
+}
+
+
+
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    width: 80%;
+    padding: 20px;
+    backdrop-filter: blur(15px);
+    margin-top: 10px;
+    border-radius: 20px;
+}       
+
+.header .Logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-size: 2rem;
+    gap: 10px;
+}
+.Logo:hover{
+    
+    transition: 0.5s;
+    scale: 1.05;
+}
+
+.Logo p{
+    color: var(--color-1);
+    font-weight: bold;
+}
+
+.header .menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.menu ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.menu ul li{
+    list-style: none;
+}
+
+.menu ul li a{
+    text-decoration: none;
+    color: var(--color-1);
+    font-size: 18px;
+    padding: 5px;
+}
+
+.menu ul li a:hover{
+    transition: 0.5s;
+    scale: 1.1;
+    background-color: var(--color-5);
+    border-radius: 10px;
+    
+}
+
+.menu .lenguage button{
+    background-color: none;
+    background: none;
+    border: none;
+
+}
+
+.menu .lenguage button:hover{
+    transition: 0.5s;
+    scale: 1.1;
+}
+
+.form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    border-radius: 20px;
+    margin: 80px auto;
+    background-color: var(--color-6);
+    padding: 20px;
+
+}
+
+.form-container h4{
+    
+    font-size: 20px;
+    font-weight: normal;
+    margin: 10px 0;
+    color: var(--color-1);
+}
+
+.form-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .titulo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Estilo dos inputs */
+  form input[type="text"],
+  form input[type="datetime-local"] {
+    border: none;
+    border-bottom: 2px solid var(--color-5);
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: transparent;
+  }
+  
+  form input[type="text"]:focus,
+  form input[type="datetime-local"]:focus {
+    border-bottom: 2px solid var(--color-1);
+  }
+
+    form input::placeholder{
+        color: var(--color-7);
+    }
+
+    #opcoes-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #opcoes-container input{
+        margin: 20px 0;
+        background-color: var(--color-5);
+        border: none;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    #opcoes-container input:hover{
+        transition: 0.5s;
+        scale: 1.05;
+    }
+
+    #opcoes-container input::placeholder{
+        color: var(--color-4);
+    }
+
+  
+ 
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+ .btn button{
+
+    background-color: var(--color-1);
+    color: var(--color-6);
+  }
+  
+  button:hover {
+    background-color: var(--color-2);
+    color: var(--color-6);
+ }
+  
+
+
+ 
+
+
+

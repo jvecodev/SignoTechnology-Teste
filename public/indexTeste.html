@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/index.css"> 
+  <link rel="shortcut icon" href="img/grafico.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+
+  <title>Sistema de Enquetes</title>
+</head>
+<body>
+  <header class="header">
+    <main class="Logo">
+      <div><img src="./img/grafico.png" alt="Logo"></div>
+      <p data-lang="pt">Sistema de Enquete</p>  
+      <p style="display: none;" data-lang="en">Poll System</p>
+    </main>
+
+    <nav class="menu">
+
+
+      <div class="lenguage">
+        <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
+        <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
+      </div>
+
+      <ul>
+        <li data-lang="pt"><a href="enquete.html">Enquete</a></li>
+        <li style="display: none;" data-lang="en"><a href="enquete.html">Poll</a></li>
+        <li data-lang="pt"><a href="votacao.html">Votação</a></li>
+        <li style="display: none;" data-lang="en"><a href="votacao.html">Vote</a></li>
+        <li data-lang="pt"><a href="resultado.html">Resultado</a></li>
+        <li style="display: none;" data-lang="en"><a href="resultado.html">Result</a></li>
+      </ul>
+
+      
+
+    </nav>
+
+  </header>
+  <section class="form-container">
+
+    <h1>Cadastrar Enquete</h1>
+
+    <form id="enquete-form">
+      
+      
+      <input data-lang="pt" type="text" id="titulo" name="titulo" required placeholder="Título da Enquete">
+      <input style="display: none;" data-lang="en" type="text" id="titulo" name="titulo" required placeholder="Poll Title">
+
+      
+      <input data-lang="pt" type="datetime-local" id="data-inicio" name="data-inicio" required placeholder="Data de Início">
+      <input style="display: none;" data-lang="en" type="datetime-local" id="data-inicio" name="data-inicio" required placeholder="Start Date">
+
+      
+      <input data-lang="pt" type="datetime-local" id="data-fim" name="data-fim" required placeholder="Data de Término">
+      <input style="display: none;" data-lang="en" type="datetime-local" id="data-fim" name="data-fim" required placeholder="End Date">
+
+      <div id="erro"></div>
+
+      <h4 data-lang="pt">Adicione os dados</h4>
+      <h4 style="display: none;" data-lang="en">Add the data</h4>
+
+      <div id="opcoes-container">
+        
+       
+        <input data-lang="pt" type="text" id="opcao-1" name="opcao-1" required placeholder="Opção 1">
+        <input style="display: none;" data-lang="en" type="text" id="opcao-1" name="opcao-1" required placeholder="Option 1">
+
+
+        
+        <input data-lang="pt" type="text" id="opcao-2" name="opcao-2" required placeholder="Opção 2">
+        <input style="display: none;" data-lang="en" type="text" id="opcao-2" name="opcao-2" required placeholder="Option 2">
+
+        
+        <input data-lang="pt" type="text" id="opcao-3" name="opcao-3" required placeholder="Opção 3">
+        <input style="display: none;" data-lang="en" type="text" id="opcao-3" name="opcao-3" required placeholder="Option 3">
+      </div>
+
+      <div class="btn">
+        <button data-lang="pt" type="button" id="add-opcao">Adicionar Opção</button>
+        <button style="display: none;" data-lang="en" type="button" id="add-opcao">Add Option</button>
+        <button data-lang="pt" type="submit">Cadastrar Enquete</button>
+        <button style="display: none;" data-lang="en" type="submit">Register Poll</button>
+      </div>
+      
+    </form>
+  </section>
+
+
+    <script src="../public/js/script1.js"></script>
+    <script src="js/Idioma.js"></script>
+</body>
+</html>
