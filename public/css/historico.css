@@ -105,104 +105,75 @@ body{
     scale: 1.1;
 }
 
-.form-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 50%;
-    border-radius: 20px;
-    margin: 60px auto;
-    background-color: var(--color-6);
-    padding: 10px;
-
+.enquete-list {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-container h4{
-    
-    font-size: 20px;
-    font-weight: normal;
-    margin: 10px 0;
-    color: var(--color-1);
-}
-
-.form-container h1 {
-    font-size: 24px;
+.enquete-list h3 {
+    text-align: center;
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    width: 90%;
-  }
+}
 
+#enquete-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
 
+.enquete {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
+.enquete:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
+.enquete p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
 
-  
-  
-  form input[type="text"],
-  form input[type="datetime-local"] {
+.enquete button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: white;
+    background-color: #4CAF50;
     border: none;
-    border-bottom: 2px solid var(--color-5);
-    padding: 10px;
-    font-size: 15px;
-    width: 100%;
-    outline: none;
-    transition: all 0.3s ease;
-    background-color: transparent;
-  }
-  
-  form input[type="text"]:focus,
-  form input[type="datetime-local"]:focus {
-    border-bottom: 2px solid var(--color-1);
-  }
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-    form input::placeholder{
-        color: var(--color-7);
+.enquete button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 600px) {
+    .enquete-list {
+        padding: 10px;
     }
 
+    .enquete p {
+        font-size: 12px;
+    }
 
-    
-
-  
- 
-  .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
- .btn button{
-
-    background-color: var(--color-1);
-    color: var(--color-6);
-  }
-  
-  button:hover {
-    background-color: var(--color-2);
-    color: var(--color-6);
- }
-  
-
-
- 
-
-
-
+    .enquete button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

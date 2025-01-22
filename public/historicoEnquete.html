@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/historico.css"> 
+    <link rel="shortcut icon" href="img/grafico.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <title>Histórico de Enquetes</title>
+</head>
+<body>
+    <header class="header">
+        <main class="Logo">
+          <div><img src="./img/grafico.png" alt="Logo"></div>
+          <p data-lang="pt">Sistema de Enquete</p>  
+          <p style="display: none;" data-lang="en">Poll System</p>
+        </main>
+    
+        <nav class="menu">
+          <div class="lenguage">
+            <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
+            <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
+          </div>
+          <ul>
+            <li data-lang="pt"><a href="enquete.html">Enquete</a></li>
+            <li style="display: none;" data-lang="en"><a href="enquete.html">Poll</a></li>
+            <li data-lang="pt"><a href="votacao.html">Votação</a></li>
+            <li style="display: none;" data-lang="en"><a href="votacao.html">Vote</a></li>
+            <li data-lang="pt"><a href="resultado.html">Resultado</a></li>
+            <li style="display: none;" data-lang="en"><a href="resultado.html">Result</a></li>
+          </ul>
+        </nav>
+    </header>
+
+    <section class="enquete-list">
+        <h3>Histórico de Enquetes</h3>
+        <div id="enquete-container"></div>
+    </section>
+
+    <script src="js/historico.js"></script>
+</body>
+</html>

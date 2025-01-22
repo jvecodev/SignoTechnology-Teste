@@ -1,10 +1,4 @@
 
-CREATE DATABASE railway;
-drop table enquete;
-drop table opcao;
-drop table voto;
-USE railway;
-
 
 CREATE TABLE Enquete (
     id_enquete INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,6 +11,7 @@ CREATE TABLE Enquete (
 CREATE TABLE Opcao (
     id_opcao INT AUTO_INCREMENT PRIMARY KEY,
     id_enquete INT NOT NULL,
+    opcao varchar(50) not null,
     votos INT DEFAULT 0,
     FOREIGN KEY (id_enquete) REFERENCES Enquete(id_enquete) ON DELETE CASCADE
 );
