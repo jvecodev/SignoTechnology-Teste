@@ -20,8 +20,27 @@
 
 body{
     overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: url('../img/fundo.jpg') no-repeat center center/cover fixed;
     
+}
+
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background: var(--color-4);
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    background-color: var(--color-1);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: var(--color-3);
 }
 
 
@@ -29,14 +48,18 @@ body{
 
 .header{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin: 0 auto;
-    width: 80%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
     padding: 20px;
     backdrop-filter: blur(15px);
-    margin-top: 10px;
+    
     border-radius: 20px;
+   
 }       
 
 .header .Logo{
@@ -112,7 +135,8 @@ body{
     flex-direction: column;
     width: 50%;
     border-radius: 20px;
-    margin: 60px auto;
+    margin: 100px auto;
+    
     background-color: var(--color-6);
     padding: 10px;
 
@@ -149,15 +173,20 @@ body{
   
   form input[type="text"],
   form input[type="datetime-local"] {
+    margin-top: 5px;
+    padding: 8px;
+    font-size: 14px;
     border: none;
-    border-bottom: 2px solid var(--color-5);
-    padding: 10px;
-    font-size: 15px;
+    border-radius: 4px;
     width: 100%;
-    outline: none;
-    transition: all 0.3s ease;
-    background-color: transparent;
+    border-bottom: 2px solid var(--color-5);
   }
+
+    form input:hover{
+        border-bottom: 2px solid var(--color-1);
+        scale: 1.005;
+        transition: 0.8s;
+    }
   
   form input[type="text"]:focus,
   form input[type="datetime-local"]:focus {

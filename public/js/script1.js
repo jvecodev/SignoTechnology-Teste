@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(() => {
                 alert('Enquete cadastrada com sucesso!');
-                location.href = 'votacao.html';
+                location.href = 'enquetes.html';
             })
             .catch(error => {
                 console.error(error.message);

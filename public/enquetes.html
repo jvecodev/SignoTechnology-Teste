@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/historico.css"> 
+    <link rel="stylesheet" href="css/enquete.css"> 
     <link rel="shortcut icon" href="img/grafico.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
     <script src="https://unpkg.com/scrollreveal"></script>
-    <title>Histórico de Enquetes</title>
+    <title>Enquetes</title>
 </head>
 <body>
     <header class="header" id="header">
@@ -25,7 +25,7 @@
           <ul>
             <li data-lang="pt"><a href="index.html">Enquete</a></li>
             <li style="display: none;" data-lang="en"><a href="index.html">Poll</a></li>
-            <li data-lang="pt"><a href="enquetes.html">Votação</a></li>
+            <li data-lang="pt"><a href="#enquetes-container">Votação</a></li>
             <li style="display: none;" data-lang="en"><a href="enquetes.html">Vote</a></li>
             <li data-lang="pt"><a href="resultado.html">Resultado</a></li>
             <li style="display: none;" data-lang="en"><a href="resultado.html">Result</a></li>
@@ -33,12 +33,22 @@
         </nav>
     </header>
 
-    <section class="enquete-list" id="enquete-list">
-        <h3>Histórico de Enquetes</h3>
-        <div id="enquete-container"></div>
+    <section class="welcome" id="welcome">
+        <h3>Bem vindo</h3>
+        <p>Fique por dentro das enquetes que movimentam a internet</p>
     </section>
 
-    <script src="js/historico.js"></script>
+    <div class="carousel-container">
+      <div class="carousel-track enquetes-list"></div>
+      <button class="carousel-btn prev">⟵</button>
+      <button class="carousel-btn next">⟶</button>
+    </div>
+    
+    
+
+    
+
+    <script src="js/enquete.js"></script>
     <script src="js/scrollSuave.js"></script>
 </body>
 </html>
