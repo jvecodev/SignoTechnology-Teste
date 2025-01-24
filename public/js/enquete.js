@@ -67,7 +67,7 @@ async function carregarEnquetes() {
         votarBtn.dataset.enquete = enquete.id_enquete;
         votarBtn.disabled = true;
         votarBtn.textContent = 'Votar';
-        location.reload();
+        
 
         const votarBtnEn = document.createElement('button');
         votarBtnEn.style.display = 'none';
@@ -76,7 +76,7 @@ async function carregarEnquetes() {
         votarBtnEn.dataset.enquete = enquete.id_enquete;
         votarBtnEn.disabled = true;
         votarBtnEn.textContent = 'Vote';
-        location.reload();
+        
 
         enqueteCard.appendChild(votarBtn);
         enqueteCard.appendChild(votarBtnEn);
