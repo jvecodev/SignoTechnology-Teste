@@ -13,31 +13,31 @@
 </head>
 <body>
   <header class="header" id="header">
-    <main class="Logo">
-      <div><img src="./img/grafico.png" alt="Logo"></div>
-      <p data-lang="pt">Sistema de Enquete</p>  
-      <p style="display: none;" data-lang="en">Poll System</p>
+
+    <main class="contentNav">
+        <main class="Logo">
+          <div><img src="./img/grafico.png" alt="Logo"></div>
+          <p data-lang="pt">Sistema de Enquete</p>  
+          <p style="display: none;" data-lang="en">Poll System</p>
+        </main>
+        <div class="lenguage">
+          <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
+          <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
+        </div>
+
+        <nav class="menu" id="menu">
+            <ul class="list">
+              <li data-lang="pt"><a href="historicoEnquete.html">Histórico</a></li>
+              <li style="display: none;" data-lang="en"><a href="historicoEnquete.html">History</a></li>
+              <li data-lang="pt"><a href="enquetes.html">Votação</a></li>
+              <li style="display: none;" data-lang="en"><a href="enquetes.html">Vote</a></li>
+            </ul>
+            <button class="hamburguer" id="menu-toggle">
+              <i class="bi bi-list"></i>
+            </button>
+        </nav>
     </main>
-
-    <nav class="menu">
-
-
-      <div class="lenguage">
-        <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
-        <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
-      </div>
-
-      <ul>
-        <li data-lang="pt"><a href="historicoEnquete.html">Histórico</a></li>
-        <li style="display: none;" data-lang="en"><a href="historicoEnquete.html">History</a></li>
-        <li data-lang="pt"><a href="enquetes.html">Votação</a></li>
-        <li style="display: none;" data-lang="en"><a href="enquetes.html">Vote</a></li>
-        
-      </ul>
-
       
-
-    </nav>
 
   </header>
   <section class="form-container" id="form-container">
@@ -96,5 +96,6 @@
     <script src="js/script1.js"></script>
     <script src="js/Idioma.js"></script>
     <script src="js/scrollSuave.js"></script>
+    <script src="js/menuToggle.js"></script>
 </body>
 </html>

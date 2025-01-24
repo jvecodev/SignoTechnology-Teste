@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/enquete.css"> 
-    <link rel="shortcut icon" href="img/grafico.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/mediaScreen3.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <title>Enquetes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/enquete.css"> 
+  <link rel="shortcut icon" href="img/grafico.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/mediaScreen3.css">
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+
+  <title>Sistema de Enquetes</title>
 </head>
 <body>
-    <header class="header" id="header">
+  <header class="header" id="header">
+
+    <main class="contentNav">
         <main class="Logo">
           <div><img src="./img/grafico.png" alt="Logo"></div>
           <p data-lang="pt">Sistema de Enquete</p>  
           <p style="display: none;" data-lang="en">Poll System</p>
         </main>
-    
-        <nav class="menu">
-          <div class="lenguage">
-            <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
-            <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
-          </div>
-          <ul>
-            <li data-lang="pt"><a href="index.html">Enquete</a></li>
-            <li style="display: none;" data-lang="en"><a href="index.html">Poll</a></li>
-            <li data-lang="pt"><a href="#carousel-container">Votação</a></li>
-            <li style="display: none;" data-lang="en"><a href="#carousel-container">Vote</a></li>
-            
-          </ul>
+        <div class="lenguage">
+          <button id="btn-pt"><img src="img/brasil.png" alt=""></button>
+          <button id="btn-en"><img src="img/reino-unido.png" alt=""></button>
+        </div>
+
+        <nav class="menu" id="menu">
+            <ul class="list">
+              <li data-lang="pt"><a href="historicoEnquete.html">Histórico</a></li>
+              <li style="display: none;" data-lang="en"><a href="historicoEnquete.html">History</a></li>
+              <li data-lang="pt"><a href="enquetes.html">Votação</a></li>
+              <li style="display: none;" data-lang="en"><a href="enquetes.html">Vote</a></li>
+            </ul>
+            <button class="hamburguer" id="menu-toggle">
+              <i class="bi bi-list"></i>
+            </button>
         </nav>
-    </header>
+    </main>
+      
+
+  </header>
 
     <section class="welcome" id="welcome">
         <h3>Bem vindo</h3>
@@ -49,5 +57,6 @@
     <script src="js/enquete.js"></script>
     <script src="js/scrollSuave.js"></script>
     <script src="js/Idioma.js"></script>
+    <script src="js/menuToggle.js"></script>
 </body>
 </html>

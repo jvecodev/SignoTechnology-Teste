@@ -20,11 +20,17 @@
 
 body{
     overflow-x: hidden;
-    
+    overflow-y: scroll;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background: url('../img/fundo.jpg') no-repeat center center/cover fixed;
+    
 }
 
 
@@ -43,6 +49,17 @@ body::-webkit-scrollbar-thumb:hover {
     background: var(--color-3);
 }
 
+.contentNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.hamburguer {
+    display: none;
+    
+}
 
 
 
@@ -53,16 +70,13 @@ body::-webkit-scrollbar-thumb:hover {
     width: 100%;
     position: fixed;
     top: 0;
-    left: 00;
+    left: 0;
     z-index: 1000;
     padding: 20px;
     backdrop-filter: blur(15px);
-    margin-top: 5px;
     border-radius: 20px;
    
 }       
-
-
 
 .header .Logo{
     display: flex;
@@ -99,13 +113,22 @@ body::-webkit-scrollbar-thumb:hover {
     
 }
 
-.menu ul li{
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu .list {
+    display: flex;
+    gap: 20px;
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .menu ul li a{
     text-decoration: none;
-    color: var(--color-1);
+    color: var(--color-5);
     font-size: 18px;
     padding: 5px;
 }
@@ -115,20 +138,24 @@ body::-webkit-scrollbar-thumb:hover {
     scale: 1.1;
     background-color: var(--color-5);
     border-radius: 10px;
+    color: var(--color-1);
     
 }
 
-.menu .lenguage button{
-    background-color: none;
+ .lenguage button{
+   
     background: none;
     border: none;
+    margin: 0 10px;
 
 }
 
-.menu .lenguage button:hover{
+.lenguage button:hover{
     transition: 0.5s;
     scale: 1.1;
+    background-color: none;
 }
+
 
 .welcome{
     width: 100%;
@@ -232,7 +259,7 @@ body::-webkit-scrollbar-thumb:hover {
     align-items: center;
     margin-bottom: 50px;
     margin-top: 50px;
-    background-color: var(--color-6);
+    
 
   }
 
@@ -251,7 +278,7 @@ body::-webkit-scrollbar-thumb:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--color-6);
+    background-color: none;
     border: none;
     
     
@@ -357,7 +384,7 @@ body::-webkit-scrollbar-thumb:hover {
   
   .btn-votar:hover {
     background-color: var(--color-3);
-    color: white;
+    color: var(--color-6);
   }
   
   

@@ -20,9 +20,15 @@
 
 body{
     overflow-x: hidden;
+    overflow-y: scroll;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    display: flex;
     background: url('../img/fundo.jpg') no-repeat center center/cover fixed;
     
 }
@@ -43,6 +49,13 @@ body::-webkit-scrollbar-thumb:hover {
     background: var(--color-3);
 }
 
+.contentNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 
 
 
@@ -57,7 +70,6 @@ body::-webkit-scrollbar-thumb:hover {
     z-index: 1000;
     padding: 20px;
     backdrop-filter: blur(15px);
-    
     border-radius: 20px;
    
 }       
@@ -97,13 +109,22 @@ body::-webkit-scrollbar-thumb:hover {
     
 }
 
-.menu ul li{
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu .list {
+    display: flex;
+    gap: 20px;
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .menu ul li a{
     text-decoration: none;
-    color: var(--color-1);
+    color: var(--color-5);
     font-size: 18px;
     padding: 5px;
 }
@@ -113,19 +134,22 @@ body::-webkit-scrollbar-thumb:hover {
     scale: 1.1;
     background-color: var(--color-5);
     border-radius: 10px;
+    color: var(--color-1);
     
 }
 
-.menu .lenguage button{
-    background-color: none;
+ .lenguage button{
+   
     background: none;
     border: none;
+    margin: 0 10px;
 
 }
 
-.menu .lenguage button:hover{
+.lenguage button:hover{
     transition: 0.5s;
     scale: 1.1;
+    background-color: none;
 }
 
 .form-container{
@@ -136,7 +160,6 @@ body::-webkit-scrollbar-thumb:hover {
     width: 50%;
     border-radius: 20px;
     margin: 100px auto;
-    
     background-color: var(--color-6);
     padding: 10px;
 
@@ -153,7 +176,7 @@ body::-webkit-scrollbar-thumb:hover {
 .form-container h1 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--color-1);
   }
   
   form {
@@ -166,7 +189,10 @@ body::-webkit-scrollbar-thumb:hover {
   }
 
 
-
+  .hamburguer {
+    display: none;
+    
+}
 
 
   
@@ -209,11 +235,11 @@ body::-webkit-scrollbar-thumb:hover {
     gap: 10px;
   }
   
-  button {
-    padding: 10px 20px;
+    .btn button {
+    padding: 10px 10px;
     border: none;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -224,7 +250,7 @@ body::-webkit-scrollbar-thumb:hover {
     color: var(--color-6);
   }
   
-  button:hover {
+  .btn button:hover {
     background-color: var(--color-2);
     color: var(--color-6);
  }
