@@ -58,7 +58,7 @@ app.get('/api/enquete', async (req, res) => {
             enquetes.map(async (enquete) => {
                 const [opcoes] = await connection.execute(queryOpcoes, [enquete.id_enquete]);
 
-                // Atualizar status com base nas datas
+                
                 const now = new Date();
                 if (now < new Date(enquete.data_inicio)) {
                     enquete.status = 'Não Iniciada';
@@ -109,7 +109,7 @@ app.put('/api/enquete/:id_enquete', async (req, res) => {
             return res.status(404).json({ error: 'Enquete não encontrada para atualizar' });
         }
 
-        // Atualizar as opções se forem enviadas
+        
         if (opcoes && Array.isArray(opcoes)) {
             const queryDeleteOpcoes = 'DELETE FROM Opcao WHERE id_enquete = ?';
             await connection.execute(queryDeleteOpcoes, [id_enquete]);
@@ -157,7 +157,7 @@ app.post('/api/voto', async (req, res) => {
     }
   
     try {
-      // Registra ou atualiza o voto
+      
       const query = `
         INSERT INTO Voto (id_opcao, id_enquete, quantidade_voto)
         VALUES (?, ?, 1)
@@ -167,7 +167,7 @@ app.post('/api/voto', async (req, res) => {
       `;
       await connection.execute(query, [id_opcao, id_enquete]);
   
-      // Obtém a quantidade de votos atualizada para a opção
+      
       const votosQuery = `
         SELECT SUM(quantidade_voto) AS votos
         FROM Voto
@@ -175,7 +175,7 @@ app.post('/api/voto', async (req, res) => {
       `;
       const [result] = await connection.execute(votosQuery, [id_opcao, id_enquete]);
   
-      // Retorna a quantidade de votos
+      
       return res.status(200).json({ votos: result[0].votos });
     } catch (error) {
       console.error('Erro ao registrar voto:', error);
@@ -228,7 +228,7 @@ app.get('/api/enquete/:id_enquete', async (req, res) => {
       const queryOpcoes = 'SELECT * FROM Opcao WHERE id_enquete = ?';
       const [opcoes] = await connection.execute(queryOpcoes, [id_enquete]);
   
-      // Atualizar status com base nas datas
+      
       const now = new Date();
       if (now < new Date(enquete[0].data_inicio)) {
         enquete[0].status = 'Não Iniciada';

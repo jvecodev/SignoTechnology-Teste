@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const dataInicio = document.querySelector('input[name="data-inicio"]:not([style*="display: none"])')?.value.trim();
         const dataFim = document.querySelector('input[name="data-fim"]:not([style*="display: none"])')?.value.trim();
 
-        // Captura todas as opções, incluindo as dinâmicas
+       
         const opcoes = Array.from(
             document.querySelectorAll('input[name^="opcao-"]')
-        ).filter(input => input.style.display !== 'none') // Considera apenas os inputs visíveis
+        ).filter(input => input.style.display !== 'none') 
           .map(input => input.value.trim())
-          .filter(opcao => opcao !== ''); // Remove opções vazias
+          .filter(opcao => opcao !== ''); 
 
-        // Validação
+        
         if (!titulo || !dataInicio || !dataFim || opcoes.length < 3) {
             divErro.textContent = 'Preencha todos os campos obrigatórios e pelo menos 3 opções.';
             return;

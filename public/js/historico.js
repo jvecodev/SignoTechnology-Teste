@@ -99,7 +99,7 @@ async function excluirEnquete(id_enquete) {
             const response = await fetch(`/api/enquete/${id_enquete}`, { method: 'DELETE' });
 
             if (response.ok) {
-                alert('Enquete excluída com sucesso!');
+                
 
                 location.reload();
             } else {
