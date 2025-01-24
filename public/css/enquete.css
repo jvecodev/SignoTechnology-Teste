@@ -165,10 +165,20 @@ body::-webkit-scrollbar-thumb:hover {
     align-items: center;
     flex-direction: column;
     gap: 20px;
+    color: var(--color-6);
     margin-top: 100px;
     background: linear-gradient(135deg, var(--color-2), var(--color-3), var(--color-4), var(--color-5));
     background-size: 300% 300%;
     animation: gradient-animation 8s ease infinite;
+}
+.welcome h3{
+  font-size: 2rem;
+  
+}
+
+.welcome p{
+  font-size: 1.5rem;
+  
 }
 
 @keyframes gradient-animation {
@@ -192,14 +202,14 @@ body::-webkit-scrollbar-thumb:hover {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    min-width: 300px; 
-    
+    width: 80%;
+    flex-shrink: 0;
     padding: 20px;
     box-sizing: border-box;
     background: var(--color-6);
     box-shadow: var(--color-1) 0px 0px 2px;
     border-radius: 10px;
-    margin-right: 10px;
+    margin-right: 50px;
     
   }
   
@@ -249,19 +259,17 @@ body::-webkit-scrollbar-thumb:hover {
   }
 
   .carousel-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
     position: relative;
     overflow: hidden;
     width: 100%;
+    height: auto; 
     padding: 10px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
-    margin-top: 50px;
-    
-
+    margin: 50px 0;
   }
+  
 
   
   
@@ -271,21 +279,20 @@ body::-webkit-scrollbar-thumb:hover {
     will-change: transform;
   }
   
+
   
   
+ 
   .carousel-btn {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: none;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
     border: none;
-    
-    
     cursor: pointer;
-    padding: 10px;
     z-index: 100;
   }
+  
 
     .carousel-btn:hover{
         transition: 0.5s;
@@ -293,9 +300,11 @@ body::-webkit-scrollbar-thumb:hover {
         
     }
   .carousel-btn.prev {
-    left: 10px;
+    left: 100px;
     font-size: 1px;
     background-color: none;
+    padding: 0px;
+
     
   }
 
@@ -324,11 +333,13 @@ body::-webkit-scrollbar-thumb:hover {
   }
   
   .carousel-btn.next {
-    right: 10px;
+    right: 100px;
+    padding: 0px;
+    background-color: none;
   }
   
   .carousel-btn:disabled {
-    opacity: 0.5;
+    
     cursor: not-allowed;
   }
   .opcao-btn {
