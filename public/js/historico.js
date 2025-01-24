@@ -14,7 +14,8 @@ async function carregarEnquetes() {
                 enquete.opcoes.forEach((opcao, index) => {
                     opcoesHtml += `
                         <div class="campo">
-                            <label><strong>Opção ${index + 1}:</strong></label>
+                            <label data-lang="pt" ><strong>Opção ${index + 1}:</strong></label>
+                            <label  style="display: none;" data-lang="en" ><strong>Option ${index + 1}:</strong></label>
                             <input type="text" class="editable" data-key="opcoes[${index}]" value="${opcao.opcao}" />
                         </div>
                     `;
@@ -25,22 +26,28 @@ async function carregarEnquetes() {
 
             enqueteDiv.innerHTML = `
                 <div class="campo">
-                    <label><strong>Título:</strong></label>
+                    <label data-lang="pt" ><strong>Título:</strong></label>
+                    <label  style="display: none;" data-lang="en" ><strong>Title:</strong></label>
                     <input type="text" class="editable" data-key="titulo" value="${enquete.titulo}" />
                 </div>
                 <div class="campo">
-                    <label><strong>Início:</strong></label>
+                    <label data-lang="pt" ><strong>Início:</strong></label>
+                    <label  style="display: none;" data-lang="en" ><strong>Start:</strong></label>
                     <input type="datetime-local" class="editable" data-key="data_inicio" value="${new Date(enquete.data_inicio).toISOString().slice(0, 16)}" />
                 </div>
                 <div class="campo">
-                    <label><strong>Fim:</strong></label>
-                    <input type="datetime-local" class="editable" data-key="data_fim" value="${new Date(enquete.data_fim).toISOString().slice(0, 16)}" />
+                    <label data-lang="pt" ><strong>Fim:</strong></label>
+                    <label  style="display: none;" data-lang="en" ><strong>End:</strong></label>
+                    <input  type="datetime-local" class="editable" data-key="data_fim" value="${new Date(enquete.data_fim).toISOString().slice(0, 16)}" />
+
                 </div>
                 ${opcoesHtml}
 
                 <div class="botoes">
-                    <button class="save-btn" data-id="${enquete.id_enquete}" onclick="salvarAlteracoes(this)">Salvar</button>
-                    <button onclick="excluirEnquete(${enquete.id_enquete})">Excluir</button>
+                    <button data-lang="pt" class="save-btn" data-id="${enquete.id_enquete}" onclick="salvarAlteracoes(this)">Salvar</button>
+                    <button style="display: none;" data-lang="en" class="save-btn" data-id="${enquete.id_enquete}" onclick="salvarAlteracoes(this)">Save</button>
+                    <button data-lang="pt"  onclick="excluirEnquete(${enquete.id_enquete})">Excluir</button>
+                    <button style="display: none;" data-lang="en"  onclick="excluirEnquete(${enquete.id_enquete})">Delete</button>
                 </div>
             `;
 
@@ -75,7 +82,7 @@ async function salvarAlteracoes(button) {
         });
 
         if (response.ok) {
-            alert('Alterações salvas com sucesso!');
+            
             location.reload();
         } else {
             alert('Erro ao salvar alterações.');

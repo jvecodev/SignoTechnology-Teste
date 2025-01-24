@@ -4,7 +4,6 @@ async function carregarEnquetes() {
     if (!response.ok) throw new Error('Erro ao carregar enquetes');
 
     const enquetes = await response.json();
-
     const track = document.querySelector('.carousel-track');
     track.innerHTML = '';
 
@@ -14,23 +13,63 @@ async function carregarEnquetes() {
 
       enqueteCard.innerHTML = `
         <h3>${enquete.titulo}</h3>
-        <p><i class="bi bi-check-circle"></i>  Status: <strong>${enquete.status}</strong></p>
-        <p><i class="bi bi-calendar-week"></i>  Início: ${new Date(
+        <p data-lang="pt"><i class="bi bi-check-circle"></i> Status: <strong>${enquete.status}</strong></p>
+        <p style="display: none;" data-lang="en"><i class="bi bi-check-circle"></i> Status: <strong>${enquete.status === 'Não Iniciada' ? 'Not Started' : 'Ended'}</strong></p>
+
+        <p data-lang="pt" ><i class="bi bi-calendar-week"></i> Início: ${new Date(
           enquete.data_inicio
-        ).toLocaleDateString('pt-BR')}</p>
-        <p><i class="bi bi-calendar-week"></i>  Término: ${new Date(
+        ).toLocaleString('pt-BR')}</p>
+        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> Start: ${new Date(
+          enquete.data_inicio
+        ).toLocaleString('en-US')}</p>
+
+        <p data-lang="pt" ><i class="bi bi-calendar-week"></i> Término: ${new Date(
           enquete.data_fim
-        ).toLocaleDateString('pt-BR')}</p>
-        <div class="opcoes">
-          <h4>Opções:</h4>
-          ${enquete.opcoes
-            .map((opcao) => `<p class="opcao"> +  ${opcao.opcao}</p>`)
-            .join('')}
+        ).toLocaleString('pt-BR')}</p>
+
+        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> End: ${new Date(
+          enquete.data_fim
+        ).toLocaleString('en-US')}</p>
+        <div class="opcoes" id="opcoes-${enquete.id_enquete}">
+          <h4 data-lang="pt" >Opções:</h4>
+          <h4 style="display: none;" data-lang="en">Options:</h4>
         </div>
-        <div class="btn-votar">
-          <button>Votar</button>
-        </div>
+        <button data-lang="pt" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Votar</button>
+        <button style="display: none;" data-lang="en" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Vote</button>
       `;
+
+      const opcoesContainer = enqueteCard.querySelector('.opcoes');
+      enquete.opcoes.forEach((opcao) => {
+        const opcaoButton = document.createElement('button');
+        opcaoButton.classList.add('opcao-btn');
+        opcaoButton.textContent = `${opcao.opcao} - Votos: 0`; 
+        opcaoButton.dataset.idOpcao = opcao.id_opcao;
+
+        
+        fetch(`/api/voto?id_enquete=${enquete.id_enquete}`)
+          .then((response) => response.json())
+          .then((votos) => {
+            const opcaoVoto = votos.find((v) => v.id_opcao === opcao.id_opcao);
+            if (opcaoVoto) {
+              opcaoButton.textContent = `${opcao.opcao} - Votos: ${opcaoVoto.votos}`;
+            }
+          });
+
+        opcaoButton.addEventListener('click', (event) => {
+          
+          opcoesContainer.querySelectorAll('.opcao-btn').forEach((btn) =>
+            btn.classList.remove('selected')
+          );
+          event.target.classList.add('selected');
+
+         
+          const votarBtn = enqueteCard.querySelector('.btn-votar');
+          votarBtn.disabled = false;
+          votarBtn.dataset.idOpcao = opcao.id_opcao;
+        });
+
+        opcoesContainer.appendChild(opcaoButton);
+      });
 
       track.appendChild(enqueteCard);
     });
@@ -44,6 +83,52 @@ async function carregarEnquetes() {
   }
 }
 
+
+document.body.addEventListener('click', async (event) => {
+  if (event.target.matches('.btn-votar')) {
+    const idEnquete = event.target.dataset.enquete;
+    const idOpcao = event.target.dataset.idOpcao;
+    const opcoesContainer = event.target.closest('.enquete-card').querySelector('.opcoes');
+
+    
+    try {
+      const response = await fetch(`/api/enquete/${idEnquete}`);
+      const enquete = await response.json();
+
+      if (response.ok) {
+        if (enquete.status === 'Não Iniciada' || enquete.status === 'Encerrada') {
+          
+          alert(`Você não pode votar nesta enquete. Motivo: ${enquete.status}`);
+          return; 
+        }
+
+        
+        const voteResponse = await fetch('/api/voto', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_enquete: idEnquete, id_opcao: idOpcao }),
+        });
+
+        const result = await voteResponse.json();
+        if (voteResponse.ok) {
+          alert('Voto computado com sucesso!');
+          
+        
+          const opcaoButton = opcoesContainer.querySelector(`button[data-id-opcao="${idOpcao}"]`);
+          if (opcaoButton) {
+            opcaoButton.textContent = `${opcaoButton.textContent.split(' - ')[0]} - Votos: ${result.votos}`;
+          }
+        } else {
+          alert(`Erro: ${result.error}`);
+        }
+      } else {
+        alert(`Erro: ${enquete.error}`);
+      }
+    } catch (error) {
+      alert('Erro ao verificar status da enquete. Tente novamente mais tarde.');
+    }
+  }
+});
 
 function iniciarCarrossel() {
   const track = document.querySelector('.carousel-track');
@@ -75,91 +160,5 @@ function iniciarCarrossel() {
   updateButtons();
 }
 
+
 document.addEventListener('DOMContentLoaded', carregarEnquetes);
-
-
-function abrirModal(enquete) {
-  const modal = document.querySelector('#modal-votar');
-  const opcoesContainer = modal.querySelector('.modal-opcoes');
-  opcoesContainer.innerHTML = ''; // Limpar opções anteriores
-
-  // Criar opções no modal
-  enquete.opcoes.forEach((opcao) => {
-    const opcaoElement = document.createElement('div');
-    opcaoElement.classList.add('opcao');
-    opcaoElement.innerHTML = `
-      <span>${opcao.opcao}</span>
-      <input type="radio" name="opcao" value="${opcao.opcao}">
-    `;
-    opcoesContainer.appendChild(opcaoElement);
-  });
-
-  // Exibir modal
-  modal.classList.add('mostrar');
-
-  // Adicionar evento ao botão de fechar
-  const fecharButton = document.querySelector('#fechar-modal');
-  fecharButton.onclick = () => modal.classList.remove('mostrar');
-
-  // Adicionar evento ao clique na opção
-  opcoesContainer.querySelectorAll('input').forEach((input) => {
-    input.addEventListener('change', async () => {
-      const opcaoEscolhida = input.value;
-
-      try {
-        // Registrar voto no servidor
-        const response = await fetch('/api/votar', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ enqueteId: enquete.id, opcao: opcaoEscolhida }),
-        });
-
-        if (!response.ok) throw new Error('Erro ao registrar voto');
-
-        alert(`Voto registrado na opção: ${opcaoEscolhida}`);
-        modal.classList.remove('mostrar');
-
-        // Atualizar número de votos no front-end
-        const votosAtualizados = await response.json();
-        atualizarVotos(enquete.id, votosAtualizados);
-      } catch (error) {
-        console.error(error.message);
-        alert('Erro ao registrar o voto. Tente novamente.');
-      }
-    });
-  });
-}
-
-function atualizarVotos(enqueteId, votos) {
-  const enqueteCard = document.querySelector(
-    `.enquete-card[data-id="${enqueteId}"]`
-  );
-  const opcoesContainer = enqueteCard.querySelector('.opcoes');
-  opcoesContainer.innerHTML = `
-    <h4>Opções:</h4>
-    ${votos
-      .map(
-        (opcao) =>
-          `<p class="opcao"> + ${opcao.opcao} - ${opcao.votos} votos</p>`
-      )
-      .join('')}
-  `;
-}
-
-// Adicionar evento de clique no botão "Votar"
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.btn-votar button').forEach((button) => {
-    button.addEventListener('click', (event) => {
-      const enqueteCard = event.target.closest('.enquete-card');
-      const enqueteId = enqueteCard.dataset.id;
-
-      
-      fetch(`/api/enquete/${enqueteId}`)
-        .then((res) => res.json())
-        .then((enquete) => abrirModal(enquete))
-        .catch((err) => console.error(err.message));
-    });
-  });
-});

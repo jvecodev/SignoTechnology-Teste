@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
         newOptionPt.required = true;
         newOptionPt.setAttribute('data-lang', 'pt');
         newOptionPt.placeholder = `Opção ${opcaoCounter}`;
-        newOptionPt.style.display = 'block';
         form.insertBefore(newOptionPt, btnAddOpcao.closest('.btn'));
 
         const newOptionEn = document.createElement('input');
@@ -40,10 +39,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const titulo = document.querySelector('input[name="titulo"]:not([style*="display: none"])')?.value.trim();
         const dataInicio = document.querySelector('input[name="data-inicio"]:not([style*="display: none"])')?.value.trim();
         const dataFim = document.querySelector('input[name="data-fim"]:not([style*="display: none"])')?.value.trim();
-        const opcoes = Array.from(
-            document.querySelectorAll('input[name^="opcao-"]:not([style*="display: none"])')
-        ).map(input => input.value.trim()).filter(opcao => opcao !== '');
 
+        // Captura todas as opções, incluindo as dinâmicas
+        const opcoes = Array.from(
+            document.querySelectorAll('input[name^="opcao-"]')
+        ).filter(input => input.style.display !== 'none') // Considera apenas os inputs visíveis
+          .map(input => input.value.trim())
+          .filter(opcao => opcao !== ''); // Remove opções vazias
+
+        // Validação
         if (!titulo || !dataInicio || !dataFim || opcoes.length < 3) {
             divErro.textContent = 'Preencha todos os campos obrigatórios e pelo menos 3 opções.';
             return;
@@ -53,12 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
         registrarEnquete(enquete);
     });
 
-    
-
     function registrarEnquete(enquete) {
-        
-
-        fetch('api/enquete', {
+        fetch('/api/enquete', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,5 +83,3 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 });
-
-

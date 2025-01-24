@@ -13,7 +13,7 @@ app.use(express.static(path.join('../public')));
 app.post('/api/enquete', async (req, res) => {
     const { titulo, dataInicio, dataFim, opcoes } = req.body;
 
-    if (!titulo || !dataInicio || !dataFim || !Array.isArray(opcoes) || opcoes.length !== 3) {
+    if (!titulo || !dataInicio || !dataFim || !Array.isArray(opcoes) || opcoes.length < 3) {
         return res.status(400).json({ error: 'Dados inválidos' });
     }
 
@@ -149,8 +149,102 @@ app.delete('/api/enquete/:id_enquete', async (req, res) => {
     }
 });
 
+app.post('/api/voto', async (req, res) => {
+    const { id_enquete, id_opcao } = req.body;
+  
+    if (!id_enquete || !id_opcao) {
+      return res.status(400).json({ error: 'Campos id_enquete e id_opcao são obrigatórios.' });
+    }
+  
+    try {
+      // Registra ou atualiza o voto
+      const query = `
+        INSERT INTO Voto (id_opcao, id_enquete, quantidade_voto)
+        VALUES (?, ?, 1)
+        ON DUPLICATE KEY UPDATE
+          quantidade_voto = quantidade_voto + 1,
+          data_voto = CURRENT_TIMESTAMP
+      `;
+      await connection.execute(query, [id_opcao, id_enquete]);
+  
+      // Obtém a quantidade de votos atualizada para a opção
+      const votosQuery = `
+        SELECT SUM(quantidade_voto) AS votos
+        FROM Voto
+        WHERE id_opcao = ? AND id_enquete = ?
+      `;
+      const [result] = await connection.execute(votosQuery, [id_opcao, id_enquete]);
+  
+      // Retorna a quantidade de votos
+      return res.status(200).json({ votos: result[0].votos });
+    } catch (error) {
+      console.error('Erro ao registrar voto:', error);
+      return res.status(500).json({ error: 'Erro ao registrar voto.' });
+    }
+  });
+  
+  app.get('/api/voto', async (req, res) => {
+  const { id_enquete } = req.query;
+
+  if (!id_enquete) {
+    return res.status(400).json({ error: 'É necessário informar o id_enquete.' });
+  }
+
+  try {
+    const query = `
+      SELECT o.id_opcao, o.opcao, 
+             COALESCE(COUNT(v.id_voto), 0) AS votos
+      FROM Opcao o
+      LEFT JOIN Voto v ON v.id_opcao = o.id_opcao
+      WHERE o.id_enquete = ?
+      GROUP BY o.id_opcao
+    `;
+
+    const [opcoes] = await connection.execute(query, [id_enquete]);
+
+    if (opcoes.length === 0) {
+      return res.status(404).json({ error: 'Nenhuma opção encontrada para essa enquete.' });
+    }
+
+    return res.status(200).json(opcoes);
+  } catch (error) {
+    console.error('Erro ao buscar votos:', error);
+    return res.status(500).json({ error: 'Erro ao buscar votos.' });
+  }
+});
 
 
+app.get('/api/enquete/:id_enquete', async (req, res) => {
+    const { id_enquete } = req.params;
+  
+    try {
+      const queryEnquete = 'SELECT * FROM Enquete WHERE id_enquete = ?';
+      const [enquete] = await connection.execute(queryEnquete, [id_enquete]);
+  
+      if (enquete.length === 0) {
+        return res.status(404).json({ error: 'Enquete não encontrada.' });
+      }
+  
+      const queryOpcoes = 'SELECT * FROM Opcao WHERE id_enquete = ?';
+      const [opcoes] = await connection.execute(queryOpcoes, [id_enquete]);
+  
+      // Atualizar status com base nas datas
+      const now = new Date();
+      if (now < new Date(enquete[0].data_inicio)) {
+        enquete[0].status = 'Não Iniciada';
+      } else if (now > new Date(enquete[0].data_fim)) {
+        enquete[0].status = 'Encerrada';
+      } else {
+        enquete[0].status = 'Em Andamento';
+      }
+  
+      return res.status(200).json({ ...enquete[0], opcoes });
+    } catch (error) {
+      console.error('Erro ao buscar enquete:', error);
+      return res.status(500).json({ error: 'Erro ao buscar enquete' });
+    }
+  });
+  
 
 const PORT = process.env.PORT || 3000;
 

@@ -3,8 +3,7 @@ var deslizar = [
     document.getElementById('header'),
     document.getElementById('form-container'),
     document.getElementById('enquete-form'),
-    document.getElementById('enquete-list'),
-    document.getElementById('enquete-container'),
+    
     document.getElementById('footer'),
     document.getElementById('welcome'),
     document.getElementById('enquetes-container'),
