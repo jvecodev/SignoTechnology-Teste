@@ -202,7 +202,7 @@ body::-webkit-scrollbar-thumb:hover {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 80%;
+    width: 100%;
     flex-shrink: 0;
     padding: 20px;
     box-sizing: border-box;

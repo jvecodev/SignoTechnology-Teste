@@ -16,36 +16,24 @@ async function carregarEnquetes() {
         <p data-lang="pt"><i class="bi bi-check-circle"></i> Status: <strong>${enquete.status}</strong></p>
         <p style="display: none;" data-lang="en"><i class="bi bi-check-circle"></i> Status: <strong>${enquete.status === 'Não Iniciada' ? 'Not Started' : 'Ended'}</strong></p>
 
-        <p data-lang="pt" ><i class="bi bi-calendar-week"></i> Início: ${new Date(
-          enquete.data_inicio
-        ).toLocaleString('pt-BR')}</p>
-        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> Start: ${new Date(
-          enquete.data_inicio
-        ).toLocaleString('en-US')}</p>
+        <p data-lang="pt"><i class="bi bi-calendar-week"></i> Início: ${new Date(enquete.data_inicio).toLocaleString('pt-BR')}</p>
+        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> Start: ${new Date(enquete.data_inicio).toLocaleString('en-US')}</p>
 
-        <p data-lang="pt" ><i class="bi bi-calendar-week"></i> Término: ${new Date(
-          enquete.data_fim
-        ).toLocaleString('pt-BR')}</p>
-
-        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> End: ${new Date(
-          enquete.data_fim
-        ).toLocaleString('en-US')}</p>
+        <p data-lang="pt"><i class="bi bi-calendar-week"></i> Término: ${new Date(enquete.data_fim).toLocaleString('pt-BR')}</p>
+        <p style="display: none;" data-lang="en"><i class="bi bi-calendar-week"></i> End: ${new Date(enquete.data_fim).toLocaleString('en-US')}</p>
         <div class="opcoes" id="opcoes-${enquete.id_enquete}">
-          <h4 data-lang="pt" >Opções:</h4>
+          <h4 data-lang="pt">Opções:</h4>
           <h4 style="display: none;" data-lang="en">Options:</h4>
         </div>
-        <button data-lang="pt" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Votar</button>
-        <button style="display: none;" data-lang="en" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Vote</button>
       `;
 
       const opcoesContainer = enqueteCard.querySelector('.opcoes');
       enquete.opcoes.forEach((opcao) => {
         const opcaoButton = document.createElement('button');
         opcaoButton.classList.add('opcao-btn');
-        opcaoButton.textContent = `${opcao.opcao} - Votos: 0`; 
+        opcaoButton.textContent = `${opcao.opcao} - Votos: 0`;
         opcaoButton.dataset.idOpcao = opcao.id_opcao;
 
-        
         fetch(`/api/voto?id_enquete=${enquete.id_enquete}`)
           .then((response) => response.json())
           .then((votos) => {
@@ -56,20 +44,45 @@ async function carregarEnquetes() {
           });
 
         opcaoButton.addEventListener('click', (event) => {
-          
           opcoesContainer.querySelectorAll('.opcao-btn').forEach((btn) =>
             btn.classList.remove('selected')
           );
           event.target.classList.add('selected');
 
-         
           const votarBtn = enqueteCard.querySelector('.btn-votar');
-          votarBtn.disabled = false;
-          votarBtn.dataset.idOpcao = opcao.id_opcao;
+          if (votarBtn) {
+            votarBtn.disabled = false;
+            votarBtn.dataset.idOpcao = opcao.id_opcao;
+          }
         });
 
         opcoesContainer.appendChild(opcaoButton);
       });
+
+      
+      if (enquete.status !== 'Não Iniciada' && enquete.status !== 'Encerrada') {
+        const votarBtn = document.createElement('button');
+        votarBtn.dataset.lang = 'pt';
+        votarBtn.classList.add('btn-votar');
+        votarBtn.dataset.enquete = enquete.id_enquete;
+        votarBtn.disabled = true;
+        votarBtn.textContent = 'Votar';
+        location.reload();
+
+        const votarBtnEn = document.createElement('button');
+        votarBtnEn.style.display = 'none';
+        votarBtnEn.dataset.lang = 'en';
+        votarBtnEn.classList.add('btn-votar');
+        votarBtnEn.dataset.enquete = enquete.id_enquete;
+        votarBtnEn.disabled = true;
+        votarBtnEn.textContent = 'Vote';
+        location.reload();
+
+        enqueteCard.appendChild(votarBtn);
+        enqueteCard.appendChild(votarBtnEn);
+
+
+      }
 
       track.appendChild(enqueteCard);
     });
@@ -97,6 +110,9 @@ document.body.addEventListener('click', async (event) => {
 
       if (response.ok) {
         if (enquete.status === 'Não Iniciada' || enquete.status === 'Encerrada') {
+        enqueteCard.innerHTML = `
+        <button style="display: none;" data-lang="pt" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Votar</button>
+        <button style="display: none;" data-lang="en" class="btn-votar" data-enquete="${enquete.id_enquete}" disabled>Vote</button>`
           
           alert(`Você não pode votar nesta enquete. Motivo: ${enquete.status}`);
           return; 
