@@ -1,5 +1,4 @@
 const enqueteContainer = document.getElementById('enquete-container');
-
 async function carregarEnquetes() {
     try {
         const response = await fetch('/api/enquete', { method: 'GET' });
@@ -14,8 +13,8 @@ async function carregarEnquetes() {
                 enquete.opcoes.forEach((opcao, index) => {
                     opcoesHtml += `
                         <div class="campo">
-                            <label data-lang="pt" ><strong>Opção ${index + 1}:</strong></label>
-                            <label  style="display: none;" data-lang="en" ><strong>Option ${index + 1}:</strong></label>
+                            <label data-lang="pt"><strong>Opção ${index + 1}:</strong></label>
+                            <label style="display: none;" data-lang="en"><strong>Option ${index + 1}:</strong></label>
                             <input type="text" class="editable" data-key="opcoes[${index}]" value="${opcao.opcao}" />
                         </div>
                     `;
@@ -24,30 +23,38 @@ async function carregarEnquetes() {
                 opcoesHtml = '<p>Sem opções cadastradas</p>';
             }
 
+           
+            const formatDateForBR = (data) => {
+                const date = new Date(data);
+                const offset = -3; 
+                date.setHours(date.getHours() + offset);
+                return date.toISOString().slice(0, 16);
+            };
+
             enqueteDiv.innerHTML = `
                 <div class="campo">
-                    <label data-lang="pt" ><strong>Título:</strong></label>
-                    <label  style="display: none;" data-lang="en" ><strong>Title:</strong></label>
+                    <label data-lang="pt"><strong>Título:</strong></label>
+                    <label style="display: none;" data-lang="en"><strong>Title:</strong></label>
                     <input type="text" class="editable" data-key="titulo" value="${enquete.titulo}" />
                 </div>
                 <div class="campo">
-                    <label data-lang="pt" ><strong>Início:</strong></label>
-                    <label  style="display: none;" data-lang="en" ><strong>Start:</strong></label>
-                    <input type="datetime-local" class="editable" data-key="data_inicio" value="${new Date(enquete.data_inicio).toISOString().slice(0, 16)}" />
+                    <label data-lang="pt"><strong>Início:</strong></label>
+                    <label style="display: none;" data-lang="en"><strong>Start:</strong></label>
+                    <input type="datetime-local" class="editable" data-key="data_inicio" value="${formatDateForBR(enquete.data_inicio)}" />
                 </div>
                 <div class="campo">
-                    <label data-lang="pt" ><strong>Fim:</strong></label>
-                    <label  style="display: none;" data-lang="en" ><strong>End:</strong></label>
-                    <input  type="datetime-local" class="editable" data-key="data_fim" value="${new Date(enquete.data_fim).toISOString().slice(0, 16)}" />
-
+                    <label data-lang="pt"><strong>Fim:</strong></label>
+                    <label style="display: none;" data-lang="en"><strong>End:</strong></label>
+                    <input type="datetime-local" class="editable" data-key="data_fim" value="${formatDateForBR(enquete.data_fim)}" />
                 </div>
+
                 ${opcoesHtml}
 
                 <div class="botoes">
                     <button data-lang="pt" class="save-btn" data-id="${enquete.id_enquete}" onclick="salvarAlteracoes(this)">Salvar</button>
                     <button style="display: none;" data-lang="en" class="save-btn" data-id="${enquete.id_enquete}" onclick="salvarAlteracoes(this)">Save</button>
-                    <button data-lang="pt"  onclick="excluirEnquete(${enquete.id_enquete})">Excluir</button>
-                    <button style="display: none;" data-lang="en"  onclick="excluirEnquete(${enquete.id_enquete})">Delete</button>
+                    <button data-lang="pt" onclick="excluirEnquete(${enquete.id_enquete})">Excluir</button>
+                    <button style="display: none;" data-lang="en" onclick="excluirEnquete(${enquete.id_enquete})">Delete</button>
                 </div>
             `;
 
@@ -57,6 +64,8 @@ async function carregarEnquetes() {
         console.error('Erro ao carregar enquetes:', error);
     }
 }
+
+
 
 async function salvarAlteracoes(button) {
     const container = button.closest('.enquete');
