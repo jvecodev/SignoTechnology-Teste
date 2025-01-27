@@ -1,8 +1,15 @@
 const enqueteContainer = document.getElementById('enquete-container');
+
 async function carregarEnquetes() {
     try {
         const response = await fetch('/api/enquete', { method: 'GET' });
         const enquetes = await response.json();
+
+        console.log('Enquetes recebidas:', enquetes); 
+
+        if (enquetes.length === 0) {
+            console.log('Nenhuma enquete encontrada.');
+        }
 
         enquetes.forEach(enquete => {
             const enqueteDiv = document.createElement('div');
@@ -12,10 +19,10 @@ async function carregarEnquetes() {
             if (enquete.opcoes && enquete.opcoes.length > 0) {
                 enquete.opcoes.forEach((opcao, index) => {
                     opcoesHtml += `
-                        <div class="campo">
+                        <div class="campo opcao" data-index="${index}">
                             <label data-lang="pt"><strong>Opção ${index + 1}:</strong></label>
                             <label style="display: none;" data-lang="en"><strong>Option ${index + 1}:</strong></label>
-                            <input type="text" class="editable" data-key="opcoes[${index}]" value="${opcao.opcao}" />
+                            <input type="text" class="editable" data-key="opcao_${enquete.id_enquete}_opcoes_${index}" value="${opcao.opcao}" />
                         </div>
                     `;
                 });
@@ -23,10 +30,9 @@ async function carregarEnquetes() {
                 opcoesHtml = '<p>Sem opções cadastradas</p>';
             }
 
-           
             const formatDateForBR = (data) => {
                 const date = new Date(data);
-                const offset = -3; 
+                const offset = -3;
                 date.setHours(date.getHours() + offset);
                 return date.toISOString().slice(0, 16);
             };
@@ -35,17 +41,17 @@ async function carregarEnquetes() {
                 <div class="campo">
                     <label data-lang="pt"><strong>Título:</strong></label>
                     <label style="display: none;" data-lang="en"><strong>Title:</strong></label>
-                    <input type="text" class="editable" data-key="titulo" value="${enquete.titulo}" />
+                    <input type="text" class="editable" data-key="titulo_${enquete.id_enquete}" value="${enquete.titulo}" />
                 </div>
                 <div class="campo">
                     <label data-lang="pt"><strong>Início:</strong></label>
                     <label style="display: none;" data-lang="en"><strong>Start:</strong></label>
-                    <input type="datetime-local" class="editable" data-key="data_inicio" value="${formatDateForBR(enquete.data_inicio)}" />
+                    <input type="datetime-local" class="editable" data-key="data_inicio_${enquete.id_enquete}" value="${formatDateForBR(enquete.data_inicio)}" />
                 </div>
                 <div class="campo">
                     <label data-lang="pt"><strong>Fim:</strong></label>
                     <label style="display: none;" data-lang="en"><strong>End:</strong></label>
-                    <input type="datetime-local" class="editable" data-key="data_fim" value="${formatDateForBR(enquete.data_fim)}" />
+                    <input type="datetime-local" class="editable" data-key="data_fim_${enquete.id_enquete}" value="${formatDateForBR(enquete.data_fim)}" />
                 </div>
 
                 ${opcoesHtml}
@@ -65,17 +71,15 @@ async function carregarEnquetes() {
     }
 }
 
-
-
 async function salvarAlteracoes(button) {
     const container = button.closest('.enquete');
     const id_enquete = button.getAttribute('data-id');
     
-    const titulo = container.querySelector('[data-key="titulo"]').value;
-    const dataInicio = container.querySelector('[data-key="data_inicio"]').value;
-    const dataFim = container.querySelector('[data-key="data_fim"]').value;
+    const titulo = container.querySelector(`[data-key="titulo_${id_enquete}"]`).value;
+    const dataInicio = container.querySelector(`[data-key="data_inicio_${id_enquete}"]`).value;
+    const dataFim = container.querySelector(`[data-key="data_fim_${id_enquete}"]`).value;
 
-    const opcoesElements = container.querySelectorAll('[data-key^="opcoes"]');
+    const opcoesElements = container.querySelectorAll(`[data-key^="opcao_${id_enquete}_"]`);
     const opcoes = Array.from(opcoesElements).map((el, index) => ({
         index,
         opcao: el.value,
@@ -91,7 +95,6 @@ async function salvarAlteracoes(button) {
         });
 
         if (response.ok) {
-            
             location.reload();
         } else {
             alert('Erro ao salvar alterações.');
@@ -108,8 +111,6 @@ async function excluirEnquete(id_enquete) {
             const response = await fetch(`/api/enquete/${id_enquete}`, { method: 'DELETE' });
 
             if (response.ok) {
-                
-
                 location.reload();
             } else {
                 alert('Erro ao excluir enquete.');

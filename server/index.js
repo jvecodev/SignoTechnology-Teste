@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import { connection } from './dbConnection.js';
+import moment from 'moment-timezone';
 
 dotenv.config();
 
@@ -78,54 +79,55 @@ app.get('/api/enquete', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao buscar enquetes' });
     }
 });
-
 app.put('/api/enquete/:id_enquete', async (req, res) => {
-    const { id_enquete } = req.params;
-    const { titulo, dataInicio, dataFim, opcoes } = req.body;
+  const { id_enquete } = req.params;
+  const { titulo, dataInicio, dataFim, opcoes } = req.body;
 
-    if (!titulo || !dataInicio || !dataFim) {
-        return res.status(400).json({ error: 'Dados inválidos para atualização' });
+  console.log('Recebido no backend:', req.body); // Log para debugar
+
+  if (!titulo || !dataInicio || !dataFim) {
+    return res.status(400).json({ error: 'Dados inválidos para atualização' });
+  }
+
+  try {
+    const status =
+      new Date(dataInicio) > new Date()
+        ? 'Não Iniciada'
+        : new Date(dataFim) < new Date()
+        ? 'Encerrada'
+        : 'Em Andamento';
+
+    const queryUpdateEnquete =
+      'UPDATE Enquete SET titulo = ?, data_inicio = ?, data_fim = ?, status = ? WHERE id_enquete = ?';
+    const [result] = await connection.execute(queryUpdateEnquete, [
+      titulo,
+      dataInicio,
+      dataFim,
+      status,
+      id_enquete,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Enquete não encontrada para atualizar' });
     }
 
-    try {
-        const status =
-            new Date(dataInicio) > new Date()
-                ? 'Não Iniciada'
-                : new Date(dataFim) < new Date()
-                ? 'Encerrada'
-                : 'Em Andamento';
+    if (opcoes && Array.isArray(opcoes)) {
+      const queryDeleteOpcoes = 'DELETE FROM Opcao WHERE id_enquete = ?';
+      await connection.execute(queryDeleteOpcoes, [id_enquete]);
 
-        const queryUpdateEnquete =
-            'UPDATE Enquete SET titulo = ?, data_inicio = ?, data_fim = ?, status = ? WHERE id_enquete = ?';
-        const [result] = await connection.execute(queryUpdateEnquete, [
-            titulo,
-            dataInicio,
-            dataFim,
-            status,
-            id_enquete,
-        ]);
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Enquete não encontrada para atualizar' });
-        }
-
-        
-        if (opcoes && Array.isArray(opcoes)) {
-            const queryDeleteOpcoes = 'DELETE FROM Opcao WHERE id_enquete = ?';
-            await connection.execute(queryDeleteOpcoes, [id_enquete]);
-
-            const queryOpcao = 'INSERT INTO Opcao (id_enquete, opcao) VALUES (?, ?)';
-            const opcoesPromises = opcoes.map((opcao) =>
-                connection.execute(queryOpcao, [id_enquete, opcao])
-            );
-            await Promise.all(opcoesPromises);
-        }
-
-        return res.status(200).json({ message: 'Enquete atualizada com sucesso' });
-    } catch (error) {
-        console.error('Erro ao atualizar enquete:', error.message);
-        return res.status(500).json({ error: 'Erro ao atualizar enquete' });
+      
+      const queryOpcaoInsert = 'INSERT INTO Opcao (id_enquete, opcao) VALUES (?, ?)';
+      const opcoesPromises = opcoes.map((opcao, index) =>
+        connection.execute(queryOpcaoInsert, [id_enquete, opcao])
+      );
+      await Promise.all(opcoesPromises);
     }
+
+    return res.status(200).json({ message: 'Enquete atualizada com sucesso' });
+  } catch (error) {
+    console.error('Erro ao atualizar enquete:', error.message);
+    return res.status(500).json({ error: 'Erro ao atualizar enquete' });
+  }
 });
 
 app.delete('/api/enquete/:id_enquete', async (req, res) => {
@@ -149,39 +151,40 @@ app.delete('/api/enquete/:id_enquete', async (req, res) => {
     }
 });
 
+
 app.post('/api/voto', async (req, res) => {
-    const { id_enquete, id_opcao } = req.body;
-  
-    if (!id_enquete || !id_opcao) {
-      return res.status(400).json({ error: 'Campos id_enquete e id_opcao são obrigatórios.' });
-    }
-  
-    try {
-      
-      const query = `
-        INSERT INTO Voto (id_opcao, id_enquete, quantidade_voto)
-        VALUES (?, ?, 1)
-        ON DUPLICATE KEY UPDATE
-          quantidade_voto = quantidade_voto + 1,
-          data_voto = CURRENT_TIMESTAMP
-      `;
-      await connection.execute(query, [id_opcao, id_enquete]);
-  
-      
-      const votosQuery = `
-        SELECT SUM(quantidade_voto) AS votos
-        FROM Voto
-        WHERE id_opcao = ? AND id_enquete = ?
-      `;
-      const [result] = await connection.execute(votosQuery, [id_opcao, id_enquete]);
-  
-      
-      return res.status(200).json({ votos: result[0].votos });
-    } catch (error) {
-      console.error('Erro ao registrar voto:', error);
-      return res.status(500).json({ error: 'Erro ao registrar voto.' });
-    }
-  });
+  const { id_enquete, id_opcao } = req.body;
+
+  if (!id_enquete || !id_opcao) {
+    return res.status(400).json({ error: 'Campos id_enquete e id_opcao são obrigatórios.' });
+  }
+
+  try {
+    
+    const dataVoto = moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+
+    const query = `
+      INSERT INTO Voto (id_opcao, id_enquete, quantidade_voto, data_voto)
+      VALUES (?, ?, 1, ?)
+      ON DUPLICATE KEY UPDATE
+        quantidade_voto = quantidade_voto + 1,
+        data_voto = ?
+    `;
+    await connection.execute(query, [id_opcao, id_enquete, dataVoto, dataVoto]);
+
+    const votosQuery = `
+      SELECT SUM(quantidade_voto) AS votos
+      FROM Voto
+      WHERE id_opcao = ? AND id_enquete = ?
+    `;
+    const [result] = await connection.execute(votosQuery, [id_opcao, id_enquete]);
+
+    return res.status(200).json({ votos: result[0].votos });
+  } catch (error) {
+    console.error('Erro ao registrar voto:', error);
+    return res.status(500).json({ error: 'Erro ao registrar voto.' });
+  }
+});
   
   app.get('/api/voto', async (req, res) => {
   const { id_enquete } = req.query;

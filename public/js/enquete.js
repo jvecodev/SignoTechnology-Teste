@@ -1,3 +1,5 @@
+
+
 async function carregarEnquetes() {
   try {
     const response = await fetch('/api/enquete');
@@ -128,6 +130,7 @@ document.body.addEventListener('click', async (event) => {
         const result = await voteResponse.json();
         if (voteResponse.ok) {
           alert('Voto computado com sucesso!');
+          window.location.reload();
           
         
           const opcaoButton = opcoesContainer.querySelector(`button[data-id-opcao="${idOpcao}"]`);
